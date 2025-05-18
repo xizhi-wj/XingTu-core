@@ -3,8 +3,8 @@ name: 构建并发布
 on:
   push:
     tags:
-      - 'v*'  # 当推送带v前缀的标签时触发，例如v1.0.0
-  workflow_dispatch:  # 允许手动触发工作流
+      - "v*" # 当推送带v前缀的标签时触发，例如v1.0.0
+  workflow_dispatch: # 允许手动触发工作流
 
 env:
   GITHUB_ACTIONS: true
@@ -42,7 +42,7 @@ jobs:
       - name: 设置Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12.4'
+          python-version: "3.12.4"
           architecture: ${{ matrix.python-arch }}
 
       - name: 安装依赖
@@ -84,7 +84,7 @@ jobs:
       - name: 设置Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12.4'
+          python-version: "3.12.4"
 
       - name: 安装依赖
         run: |
@@ -92,9 +92,7 @@ jobs:
           pip install -r requirements.txt
           pip install pyinstaller~=6.13.0
 
-      - name: 安装PyTorch 2.2.2 with CUDA
-        run: |
-          pip install torch==2.2.2 torchvision==0.17.2 torchaudio==2.2.2 --index-url https://download.pytorch.org/whl/cu121
+      # 删除了 PyTorch CUDA 安装步骤
 
       - name: 构建应用
         run: |
