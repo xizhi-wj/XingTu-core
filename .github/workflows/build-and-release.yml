@@ -53,22 +53,18 @@ jobs:
 
       - name: 构建应用
         run: |
-          pyinstaller --name XingTu-core-${{ matrix.arch }} \
-                      --onefile \
-                      --add-data "XingTu_core:XingTu_core" \
-                      --hidden-import=PIL._tkinter_finder \
-                      XingTu_core/__main__.py
+          pyinstaller -n XingTu-core-${{ matrix.arch }} XingTu_core/__main__.py
 
       - name: 压缩构建结果
         run: |
           cd dist
-          7z a -r XingTu-core-macos-${{ matrix.arch }}.7z XingTu-core-${{ matrix.arch }}
+          zip -r XingTu-core-macos-${{ matrix.arch }}.zip XingTu-core-${{ matrix.arch }}
 
       - name: 上传构建结果
         uses: actions/upload-artifact@v4
         with:
           name: XingTu-core-macos-${{ matrix.arch }}
-          path: dist/XingTu-core-macos-${{ matrix.arch }}.7z
+          path: dist/XingTu-core-macos-${{ matrix.arch }}.zip
 
   build-windows:
     name: 构建 Windows
@@ -96,18 +92,18 @@ jobs:
 
       - name: 构建应用
         run: |
-          pyinstaller --name XingTu-core-win --onefile --add-data "XingTu_core;XingTu_core" XingTu_core/__main__.py
+          pyinstaller -n XingTu-core-win XingTu_core/__main__.py
 
       - name: 压缩构建结果
         run: |
           cd dist
-          7z a -r XingTu-core-windows.7z XingTu-core-win.exe
+          powershell Compress-Archive -Path XingTu-core-win.exe -DestinationPath XingTu-core-windows.zip
 
       - name: 上传构建结果
         uses: actions/upload-artifact@v4
         with:
           name: XingTu-core-windows
-          path: dist/XingTu-core-windows.7z
+          path: dist/XingTu-core-windows.zip
 
   release:
     name: 创建发布
@@ -123,9 +119,9 @@ jobs:
       - name: 准备发布文件
         run: |
           mkdir -p dist
-          cp artifacts/XingTu-core-macos-x64/XingTu-core-macos-x64.7z dist/
-          cp artifacts/XingTu-core-macos-arm64/XingTu-core-macos-arm64.7z dist/
-          cp artifacts/XingTu-core-windows/XingTu-core-windows.7z dist/
+          cp artifacts/XingTu-core-macos-x64/XingTu-core-macos-x64.zip dist/
+          cp artifacts/XingTu-core-macos-arm64/XingTu-core-macos-arm64.zip dist/
+          cp artifacts/XingTu-core-windows/XingTu-core-windows.zip dist/
           ls -la dist/
 
       - name: 创建发布
