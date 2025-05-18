@@ -111,54 +111,9 @@ jobs:
           name: XingTu-core-windows
           path: dist/XingTu-core-windows.7z
 
-  build-wheel:
-    strategy:
-      matrix:
-        python-version: ["3.12.4"]
-        poetry-version: ["1.8.3"]
-
-    runs-on: windows-latest
-    needs: [setup]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: recursive
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - uses: abatilo/actions-poetry@v2
-        with:
-          poetry-version: ${{ matrix.poetry-version }}
-
-      - name: 构建包
-        run: |
-          poetry build
-
-      - name: 上传
-        uses: actions/upload-artifact@v4
-        with:
-          name: wheel
-          path: dist/*.whl
-
-  pypi:
-    needs: [build-wheel]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: wheel
-          path: dist
-
-      - name: 发布到 PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.PYPI_API }}
-
   release:
     name: 创建发布
-    needs: [setup, build-macos, build-windows, pypi]
+    needs: [setup, build-macos, build-windows]
     runs-on: ubuntu-latest
 
     steps:
@@ -173,7 +128,6 @@ jobs:
           cp artifacts/XingTu-core-macos-x64/XingTu-core-macos-x64.7z dist/
           cp artifacts/XingTu-core-macos-arm64/XingTu-core-macos-arm64.7z dist/
           cp artifacts/XingTu-core-windows/XingTu-core-windows.7z dist/
-          cp artifacts/wheel/* dist/
           ls -la dist/
 
       - name: 创建发布
