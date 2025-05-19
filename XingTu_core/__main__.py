@@ -1,6 +1,8 @@
 import argparse
 from config import XTConfig
 from progress import progress
+import os
+
 
 parser = argparse.ArgumentParser(description="多功能图像处理工具")
 parser.add_argument("-b", "--BASE64", help="base64 string for config json", type=str)
