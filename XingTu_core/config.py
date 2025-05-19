@@ -1,4 +1,5 @@
 from pydantic import BaseModel, DirectoryPath, FilePath, Field
+from ccrestoration import ConfigType
 from pathlib import Path
 import yaml
 import json
@@ -7,31 +8,44 @@ from typing import List, Union, Optional, Literal
 
 # 定义可能的枚举类型（根据 TypeScript 的 ImageFormat 和 XingTuCommand 调整）
 ImageFormat = Literal["jpg", "png", "webp"]  # 假设 ImageFormat 是这些值
-XingTuCommand = Literal["format", "compress", "remove_bg", "save_file"]  # 假设 Command 是这些值
+XingTuCommand = Literal["format", "compress", "remove_bg", "final2x"]  # 假设 Command 是这些值
+
+class BaseConfig(BaseModel):
+    input_path: List[FilePath]
+    output_path: DirectoryPath
+    task_id: Optional[str] = None
 
 
-class FormatConfig(BaseModel):
+class FormatConfig(BaseConfig):
     target_format: str
 
 
-class CompressConfig(BaseModel):
+class CompressConfig(BaseConfig):
     target_format: ImageFormat
     quality: int = Field(ge=1, le=100)  # 限制 quality 在 1-100 之间
 
 
-class RemoveBgConfig(BaseModel):
+class RemoveBgConfig(BaseConfig):
     bg_color: str
     model: str
+    
+    
+class Final2xConfig(BaseConfig):
+    input_path: List[FilePath]
+    output_path: DirectoryPath
+    pretrained_model_name: Union[ConfigType, str]
+    device: str
+    gh_proxy: Optional[str] = None
+    target_scale: Optional[Union[int, float]] = None
+    cc_model_scale: Optional[int] = None    
 
 
 class XTConfig(BaseModel):
     command: XingTuCommand
-    output_path: DirectoryPath
-    input_path: List[FilePath]
-    task_id: Optional[str] = None
     formatConfig: Optional[FormatConfig] = None
     compressConfig: Optional[CompressConfig] = None
     removeBgConfig: Optional[RemoveBgConfig] = None
+    final2xConfig: Optional[Final2xConfig] = None
 
     @classmethod
     def from_yaml(cls, yaml_path: Union[Path, str]) -> "XTConfig":

@@ -89,9 +89,9 @@ def remove_bg_process(config: XTConfig):
         bool: 处理是否成功
         :param config:
     """
-    output_path = config.output_path.joinpath("koutu")
+    output_path = config.removeBgConfig.output_path.joinpath("koutu")
     if not output_path.exists():
         output_path.mkdir(exist_ok=True, parents=True)
-    success = process_image(config.input_path[0], output_path, config.removeBgConfig.bg_color,
+    success = process_image(config.removeBgConfig.input_path[0], output_path, config.removeBgConfig.bg_color,
                             config.removeBgConfig.model)
     sys.exit(0 if success else 1)

@@ -117,8 +117,8 @@ def format_progress(config: XTConfig):
         return False
     if config.formatConfig.target_format is None:
         config.formatConfig.target_format = "png"
-    output_path = config.output_path.joinpath("format")
+    output_path = config.formatConfig.output_path.joinpath("format")
     if not output_path.exists():
         output_path.mkdir(exist_ok=True, parents=True)
-    success = format_image(config.input_path[0], output_path, config.formatConfig.target_format)
+    success = format_image(config.formatConfig.input_path[0], output_path, config.formatConfig.target_format)
     sys.exit(0 if success else 1)

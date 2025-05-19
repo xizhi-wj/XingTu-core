@@ -50,8 +50,8 @@ def compress_image(input_path, output_path, output_format='JPEG', quality=85):
 
 
 def compress_process(config: XTConfig):
-    output_path = config.output_path.joinpath("compress")
+    output_path = config.compressConfig.output_path.joinpath("compress")
     if not output_path.exists():
         output_path.mkdir(parents=True, exist_ok=True)
-    compress_image(config.input_path[0], output_path, config.compressConfig.target_format,
+    compress_image(config.compressConfig.input_path[0], output_path, config.compressConfig.target_format,
                    config.compressConfig.quality)
