@@ -20,8 +20,9 @@ def main():
         config = XTConfig.from_json_str(str(args.JSON))
     elif args.YAML is not None:
         config = XTConfig.from_yaml(str(args.YAML))
-    progress(config)
+    return progress(config)
 
 
 if __name__ == "__main__":
     main()
+    

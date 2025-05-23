@@ -7,12 +7,13 @@ from final2x import final2x_progress
 
 def progress(config: XTConfig):
     if config.command == 'format':
-        format_progress(config)
+        return format_progress(config)
     elif config.command == 'remove_bg':
-        remove_bg_process(config)
+        return remove_bg_process(config)
     elif config.command == 'compress':
-        compress_process(config)
+        return compress_process(config)
     elif config.command == 'final2x':
-        final2x_progress(config)
+        return final2x_progress(config)
     else:
         print('Invalid command')
+        return 0

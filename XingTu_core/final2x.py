@@ -211,7 +211,6 @@ def final2x_image(config: XTConfig):
     logger.debug("output path: " + str(config.output_path))
     sr_queue(config)
     logger.success("______SR_COMPLETED______")
-    pass
 
 def final2x_progress(config: XTConfig):
     if config.final2xConfig is None:
