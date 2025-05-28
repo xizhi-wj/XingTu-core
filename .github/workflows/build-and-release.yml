@@ -93,7 +93,7 @@ jobs:
       - name: 构建应用
         run: |
           pyinstaller -n XingTu-core XingTu_core/__main__.py
-、
+
       - name: 压缩构建结果
         run: |
           cd dist
